@@ -67,6 +67,36 @@ class SwimmingCreature(Creature):
             target.hp = 0
         print(f"{target.name} HP is now {target.hp}")
 
+class FireCreature(Creature):
+    def __init__(self, name, hp, attack_power):
+        super().__init__(name, hp, attack_power)
+        self.fire_level = 0
+
+    def emit_fire(self, new_fire_level):
+        if new_fire_level > 100:
+            self.fire_level = 100
+
+        elif new_fire_level < 0:
+            self.fire_level = 0
+
+        else:
+            self.fire_level = new_fire_level
+
+        print(f"{self.name} emit fire level to {self.fire_level}.")
+
+    def attack(self, target):
+        if not self.is_alive():
+            print(f"{self.name} cannot attack because it is defeated.")
+            return
+
+        print(f"{self.name} attacks with fire at level {self.fire_level}!")
+        print(f"It burns {target.name} for {self.attack_power} damage!")
+        target.hp -= self.attack_power
+        if target.hp < 0:
+            target.hp = 0
+        print(f"{target.name} HP is now {target.hp}")
+
+
 if __name__ == "__main__":
     print("=== Creature Class Tests ===\n")
 
@@ -130,6 +160,7 @@ if __name__ == "__main__":
     print()
     print("=== Tests Completed ===")
     print()
+
     print("=== SwimmingCreature Tests ===\n")
     serpent = SwimmingCreature("Aqua Serpent", 60, 7)
     serpent.dive_to(30)
@@ -138,5 +169,17 @@ if __name__ == "__main__":
     dummy = Creature("Practice Dummy", 40, 0)
     serpent.attack(dummy)
     print(f"Dummy HP should be 33 → Actual: {dummy.hp}")
+    print()
+    print("=== Tests Completed ===")
+    print()
+
+    print("=== FireCreature Tests ===\n")
+    magma = FireCreature("Magma Slime", 16, 76)
+    magma.emit_fire(67)
+    print(f"Fire level should be 67 → Actual: {magma.fire_level}")
+
+    dummy = Creature("Practice Dummy", 100, 0)
+    magma.attack(dummy)
+    print(f"Dummy HP should be 24 → Actual: {dummy.hp}")
     print()
     print("=== Tests Completed ===")
